@@ -20,7 +20,7 @@ public class SpringContextListener implements ApplicationListener<ContextRefresh
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         System.out.println("invoked on startup");
-        Movie movie = new Movie(1,"WAR",(float) 7.3,"Action Movie","02/10/2019");
+        Movie movie = new Movie("WAR",(float) 7.3,"Action Movie","02/10/2019");
         try {
             movieService.saveMovie(movie);
         } catch (MovieAlreadyExistException e) {

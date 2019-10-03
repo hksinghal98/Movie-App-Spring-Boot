@@ -19,7 +19,7 @@ public class CommandLineStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("invoked on startup");
-        Movie movie = new Movie(2,"WARfkhsdk",(float) 7.3,"Action Movie","02/10/2019");
+        Movie movie = new Movie("WARfkhsdk",(float) 7.3,"Action Movie","02/10/2019");
         try {
             movieService.saveMovie(movie);
         } catch (MovieAlreadyExistException e) {

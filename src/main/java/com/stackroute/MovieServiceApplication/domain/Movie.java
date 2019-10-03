@@ -12,8 +12,7 @@ public class Movie {
     private String movieOverview;
     private String movieReleaseDate;
 
-    public Movie(int movieId, String movieTitle, float voteAverage, String movieOverview, String movieReleaseDate) {
-        this.movieId = movieId;
+    public Movie(String movieTitle, float voteAverage, String movieOverview, String movieReleaseDate) {
         this.movieTitle = movieTitle;
         this.voteAverage = voteAverage;
         this.movieOverview = movieOverview;
