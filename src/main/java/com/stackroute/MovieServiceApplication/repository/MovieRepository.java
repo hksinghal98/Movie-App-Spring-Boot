@@ -12,4 +12,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     @Query("from Movie where movieTitle = ?1")
     public List<Movie> findByTitle(String movieTitle);
+    @Query("from Movie where movieTitle = ?1 and movieReleaseDate=?2")
+    public List<Movie> findByTitleAndDate(String movieTitle, String movieReleaseDate);
 }

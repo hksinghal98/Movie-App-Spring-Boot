@@ -1,6 +1,7 @@
 package com.stackroute.MovieServiceApplication.controller;
 
-import com.stackroute.MovieServiceApplication.customError.CustomError;
+import com.stackroute.MovieServiceApplication.customException.MovieAlreadyExistException;
+import com.stackroute.MovieServiceApplication.customException.MovieNotFoundException;
 import com.stackroute.MovieServiceApplication.domain.Movie;
 import com.stackroute.MovieServiceApplication.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class MovieController {
         try {
             movieService.saveMovie(movie);
             responseEntity = new ResponseEntity<String>("Successfully Saved", HttpStatus.CREATED);
-        }catch (Exception ex){
+        }catch (MovieAlreadyExistException ex){
             responseEntity = new ResponseEntity<String>(ex.getMessage(),HttpStatus.CONFLICT);
         }
         return responseEntity;
@@ -38,11 +39,7 @@ public class MovieController {
     @GetMapping("movies")
     public ResponseEntity<?> getAllMovie(){
         ResponseEntity responseEntity;
-        try {
             responseEntity = new ResponseEntity<List<Movie>>(movieService.getAllMovie(), HttpStatus.OK);
-        }catch (Exception ex){
-            responseEntity = new ResponseEntity<CustomError>(new CustomError(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.BAD_REQUEST);
-        }
             return responseEntity;
     }
     @GetMapping("movie/{movieId}")
@@ -50,8 +47,8 @@ public class MovieController {
         ResponseEntity responseEntity;
         try {
             responseEntity = new ResponseEntity<Movie>(movieService.getMovieById(movieId),HttpStatus.OK);
-        }catch (Exception ex){
-            responseEntity = new ResponseEntity<CustomError>(new CustomError(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
+        }catch (MovieNotFoundException ex){
+            responseEntity = new ResponseEntity<String>(ex.getMessage(),HttpStatus.NOT_FOUND);
         }
         return responseEntity;
     }
@@ -61,8 +58,8 @@ public class MovieController {
         ResponseEntity responseEntity;
         try {
             responseEntity = new ResponseEntity<List<Movie>>(movieService.deleteMovie(movieId), HttpStatus.NO_CONTENT);
-        }catch (Exception ex){
-            responseEntity = new ResponseEntity<CustomError>(new CustomError(HttpStatus.BAD_REQUEST, ex.getMessage()),HttpStatus.BAD_REQUEST);
+        }catch (MovieNotFoundException ex){
+            responseEntity = new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
         return responseEntity;
     }
@@ -70,23 +67,20 @@ public class MovieController {
     @PatchMapping("movie")
     public ResponseEntity<?> updateMovie(@RequestBody Movie movie){
       ResponseEntity responseEntity;
-      movieService.updateMovie(movie);
-      try{
-          responseEntity = new ResponseEntity<String>("Successfully Updated", HttpStatus.OK);
-      }catch (Exception ex){
-          responseEntity = new ResponseEntity<CustomError>(new CustomError(HttpStatus.NOT_ACCEPTABLE, ex.getMessage()),HttpStatus.NOT_ACCEPTABLE);
-      }
+        try {
+            movieService.updateMovie(movie);
+            responseEntity = new ResponseEntity<String>("Successfully Updated", HttpStatus.OK);
+        }catch (MovieNotFoundException ex){
+            responseEntity = new ResponseEntity<String>(ex.getMessage(),HttpStatus.NOT_FOUND);
+        }
+
       return responseEntity;
     }
 
     @GetMapping("movieByName/{movieTitle}")
-    public ResponseEntity<?> getMovieByTitle(@PathVariable("movieTitle") String movieTitle){
+    public ResponseEntity<?> getMovieByTitle(@PathVariable("movieTitle") String movieTitle) {
         ResponseEntity responseEntity;
-        try {
-            responseEntity = new ResponseEntity<List<Movie>>(movieService.getMovieByTitle(movieTitle),HttpStatus.OK);
-        }catch (Exception ex){
-            responseEntity = new ResponseEntity<CustomError>(new CustomError(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
-        }
+            responseEntity = new ResponseEntity<List<Movie>>(movieService.getMovieByTitle(movieTitle), HttpStatus.OK);
         return responseEntity;
     }
 
