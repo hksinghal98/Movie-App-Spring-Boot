@@ -4,13 +4,25 @@ import com.stackroute.MovieServiceApplication.customException.MovieAlreadyExistE
 import com.stackroute.MovieServiceApplication.domain.Movie;
 import com.stackroute.MovieServiceApplication.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
+@PropertySource("classpath:application.properties")
 public class CommandLineStartupRunner implements CommandLineRunner {
     @Autowired
     private MovieService movieService;
+
+    @Value("${movieTitle}")
+    private String movieTitle;
+    @Value("${movieOverview}")
+    private String movieOverview;
+    @Value("${movieReleaseDate}")
+    private String movieReleaseDate;
+    @Value("${voteAverage}")
+    private float voteAverage;
 
     public CommandLineStartupRunner(MovieService movieService) {
         this.movieService = movieService;
@@ -19,7 +31,7 @@ public class CommandLineStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("invoked on startup");
-        Movie movie = new Movie(2,"WARfkhsdk",(float) 7.3,"Action Movie","02/10/2019");
+        Movie movie = new Movie(movieTitle,voteAverage,movieOverview,movieReleaseDate);
         try {
             movieService.saveMovie(movie);
         } catch (MovieAlreadyExistException e) {
