@@ -31,6 +31,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public List<Movie> getMovieByTitle(String movieTitle) {
+        return movieRepository.findByTitle(movieTitle);
+    }
+
+    @Override
     public List<Movie> deleteMovie(int movieId) {
         movieRepository.deleteById(movieId);
         return getAllMovie();
