@@ -5,17 +5,20 @@ import com.stackroute.MovieServiceApplication.customException.MovieNotFoundExcep
 import com.stackroute.MovieServiceApplication.domain.Movie;
 import com.stackroute.MovieServiceApplication.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Qualifier("secondary")
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
 
     public MovieServiceImpl(MovieRepository movieRepository) {
+        System.out.println("Secondary");
         this.movieRepository = movieRepository;
     }
 
