@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Profile("movie")
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
