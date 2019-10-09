@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Qualifier("secondary")
-public class MovieServiceImpl implements MovieService {
+public class    MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
@@ -43,14 +43,18 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> deleteMovie(int movieId) throws MovieNotFoundException {
-        if(!movieRepository.existsById(movieId)) throw new MovieNotFoundException("Movie with ID: "+movieId+" doesn't Exist.");
-        movieRepository.deleteById(movieId);
-        return getAllMovie();
+        if(movieRepository.existsById(movieId)) {
+            System.out.println("true");
+            movieRepository.deleteById(movieId);
+            return getAllMovie();
+        }
+        throw new MovieNotFoundException("Movie with ID: "+movieId+" doesn't Exist.");
     }
 
     @Override
     public Movie saveMovie(Movie movie) throws MovieAlreadyExistException {
         if(!movieRepository.findByTitleAndDate(movie.getMovieTitle(),movie.getMovieReleaseDate()).isEmpty()) throw new MovieAlreadyExistException("Movie with ID: "+movie.getMovieId()+" Already Exist.");
+        System.out.println("a");
         return movieRepository.save(movie);
     }
 

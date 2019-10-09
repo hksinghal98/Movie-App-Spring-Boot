@@ -34,6 +34,7 @@ public class MovieController {
         }catch (MovieAlreadyExistException ex){
             responseEntity = new ResponseEntity<String>(ex.getMessage(),HttpStatus.CONFLICT);
         }
+        System.out.println(responseEntity);
         return responseEntity;
     }
 
@@ -41,6 +42,7 @@ public class MovieController {
     public ResponseEntity<?> getAllMovie(){
         ResponseEntity responseEntity;
             responseEntity = new ResponseEntity<List<Movie>>(movieService.getAllMovie(), HttpStatus.OK);
+        System.out.println(responseEntity);
             return responseEntity;
     }
     @GetMapping("movie/{movieId}")
@@ -58,7 +60,8 @@ public class MovieController {
     public ResponseEntity<?> deleteMovie(@PathVariable("movieId") int movieId){
         ResponseEntity responseEntity;
         try {
-            responseEntity = new ResponseEntity<List<Movie>>(movieService.deleteMovie(movieId), HttpStatus.NO_CONTENT);
+            List<Movie> movie = movieService.deleteMovie(movieId);
+            responseEntity = new ResponseEntity<List<Movie>>(movie, HttpStatus.NO_CONTENT);
         }catch (MovieNotFoundException ex){
             responseEntity = new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
